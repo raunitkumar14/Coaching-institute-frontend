@@ -17,8 +17,9 @@ export default function LoginPage() {
       const { data } = await api.post('/api/auth/login', { email, password });
       localStorage.setItem('user', JSON.stringify(data.user));
       router.push('/dashboard');
-    } catch (err: any) {
-      if (err?.response?.status === 401) {
+    } catch (err: unknown) {
+      const e = err as { response?: { status?: number } };
+      if (e?.response?.status === 401) {
         setError('Invalid email or password');
       } else {
         setError('Something went wrong. Please try again.');
