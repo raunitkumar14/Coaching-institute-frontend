@@ -15,7 +15,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const { data } = await api.post('/api/auth/login', { email, password });
-      localStorage.setItem('user', JSON.stringify(data));
+      localStorage.setItem('user', JSON.stringify(data.user));
       router.push('/dashboard');
     } catch (err: any) {
       if (err?.response?.status === 401) {
