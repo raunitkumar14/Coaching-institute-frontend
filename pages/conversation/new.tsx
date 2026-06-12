@@ -7,8 +7,8 @@ import { User } from '@/types';
 
 interface Lead {
   lead_id: string;
-  student_name: string;
-  student_phone: string;
+  name: string;
+  phone: string;
 }
 
 type FetchState = 'idle' | 'loading' | 'success' | 'error';
@@ -31,7 +31,7 @@ export default function NewConversationPage() {
     setLead(null);
     try {
       const { data } = await api.get<Lead>(`/api/leads/${leadIdInput.trim()}`);
-      setLead(data);
+      setLead({ lead_id: data.lead_id, name: data.name, phone: data.phone });
       setFetchState('success');
     } catch {
       setFetchState('error');
@@ -159,7 +159,7 @@ export default function NewConversationPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
                     <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Student Name</p>
-                    <p className="text-sm font-semibold text-gray-900">{lead.student_name}</p>
+                    <p className="text-sm font-semibold text-gray-900">{lead.name}</p>
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Lead ID</p>
@@ -167,7 +167,7 @@ export default function NewConversationPage() {
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Phone</p>
-                    <p className="text-sm font-semibold text-gray-900">{lead.student_phone}</p>
+                    <p className="text-sm font-semibold text-gray-900">{lead.phone}</p>
                   </div>
                 </div>
               </div>
@@ -178,8 +178,8 @@ export default function NewConversationPage() {
           {fetchState === 'success' && lead && (
             <AudioRecorder
               lead_id={lead.lead_id}
-              student_name={lead.student_name}
-              student_phone={lead.student_phone}
+              student_name={lead.name}
+              student_phone={lead.phone}
             />
           )}
         </main>
