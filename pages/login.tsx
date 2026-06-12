@@ -30,15 +30,25 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-8">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+        {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Coaching Institute</h1>
-          <p className="mt-1 text-sm text-gray-500">Sign in to your account</p>
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-brand-primary mb-4 shadow-md">
+            <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+              <path d="M12 2a4 4 0 014 4v6a4 4 0 01-8 0V6a4 4 0 014-4z" />
+              <path d="M5 10a7 7 0 0014 0M12 19v3M8 22h8" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-extrabold text-brand-navy tracking-tight">Mentors Eduserv</h1>
+          <p className="mt-1 text-xs font-semibold text-brand-primary tracking-widest uppercase">
+            JEE | NEET | FOUNDATION
+          </p>
+          <p className="mt-3 text-sm text-gray-500">Sign in to your counselor account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
-            <p className="text-sm text-red-600 text-center">{error}</p>
+            <p className="text-sm text-red-600 text-center bg-red-50 rounded-lg py-2 px-3">{error}</p>
           )}
 
           <div>
@@ -52,8 +62,9 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
-              placeholder="you@example.com"
+              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent transition"
+              placeholder="you@mentorseduserv.com"
             />
           </div>
 
@@ -68,7 +79,8 @@ export default function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400
+                         focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent transition"
               placeholder="••••••••"
             />
           </div>
@@ -76,11 +88,17 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-semibold py-2.5 transition focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+            className="w-full flex items-center justify-center gap-2 rounded-lg bg-brand-primary hover:bg-brand-accent
+                       disabled:opacity-60 text-white text-sm font-semibold py-2.5 transition shadow-sm
+                       focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2"
           >
             {loading ? 'Signing in…' : 'Sign In'}
           </button>
         </form>
+
+        <p className="mt-6 text-center text-xs text-gray-400">
+          Mentors Eduserv &copy; {new Date().getFullYear()}
+        </p>
       </div>
     </div>
   );

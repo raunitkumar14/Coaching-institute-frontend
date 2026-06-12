@@ -33,8 +33,8 @@ export default function ConversationCard({ conversation }: Props) {
     <button
       onClick={() => router.push(`/conversation/${conversation.id}`)}
       className="w-full text-left bg-white rounded-2xl border border-gray-200 shadow-sm px-6 py-4
-                 hover:shadow-md hover:border-gray-300 transition-all duration-150 focus:outline-none
-                 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                 hover:shadow-md hover:border-brand-primary transition-all duration-150 focus:outline-none
+                 focus:ring-2 focus:ring-brand-primary focus:ring-offset-2"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">

@@ -53,7 +53,6 @@ export default function AudioRecorder() {
   async function startRecording() {
     setError('');
 
-    // Step 1: obtain presigned URL before touching the mic
     try {
       const body: Record<string, string> = {
         student_name: studentName,
@@ -72,7 +71,6 @@ export default function AudioRecorder() {
       return;
     }
 
-    // Step 2: start MediaRecorder
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
@@ -148,7 +146,7 @@ export default function AudioRecorder() {
     <div className="space-y-5">
       {/* ── Student Information Card ── */}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="border-l-4 border-blue-600 px-6 py-5">
+        <div className="border-l-4 border-brand-primary px-6 py-5">
           <h2 className="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-4">
             Student Information
           </h2>
@@ -165,7 +163,7 @@ export default function AudioRecorder() {
                 disabled={formDisabled}
                 placeholder="e.g. Priya Sharma"
                 className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400
-                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent focus:bg-white
                            disabled:opacity-50 disabled:cursor-not-allowed transition"
               />
             </div>
@@ -181,7 +179,7 @@ export default function AudioRecorder() {
                 disabled={formDisabled}
                 placeholder="+91 98765 43210"
                 className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400
-                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent focus:bg-white
                            disabled:opacity-50 disabled:cursor-not-allowed transition"
               />
             </div>
@@ -197,7 +195,7 @@ export default function AudioRecorder() {
                 disabled={formDisabled}
                 placeholder="student@example.com"
                 className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400
-                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent focus:bg-white
                            disabled:opacity-50 disabled:cursor-not-allowed transition"
               />
             </div>
@@ -216,8 +214,8 @@ export default function AudioRecorder() {
           {/* ── IDLE ── */}
           {(phase === 'idle' || phase === 'error') && (
             <>
-              <div className="w-24 h-24 rounded-full bg-blue-50 flex items-center justify-center">
-                <svg className="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+              <div className="w-24 h-24 rounded-full bg-brand-light flex items-center justify-center">
+                <svg className="w-10 h-10 text-brand-primary" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
                   <rect x="9" y="2" width="6" height="12" rx="3" />
                   <path d="M5 10a7 7 0 0014 0" />
                   <line x1="12" y1="19" x2="12" y2="22" />
@@ -235,8 +233,8 @@ export default function AudioRecorder() {
               <button
                 onClick={startRecording}
                 disabled={!canStart}
-                className="flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold bg-emerald-600 hover:bg-emerald-700
-                           text-white shadow-sm transition focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2
+                className="flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold bg-brand-primary hover:bg-brand-accent
+                           text-white shadow-sm transition focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2
                            disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <span className="w-2 h-2 rounded-full bg-white" />
@@ -250,9 +248,9 @@ export default function AudioRecorder() {
             <>
               {/* Pulsing circle */}
               <div className="relative flex items-center justify-center">
-                <span className="absolute w-24 h-24 rounded-full bg-red-400 opacity-20 animate-ping" />
-                <span className="absolute w-20 h-20 rounded-full bg-red-400 opacity-25 animate-ping" style={{ animationDelay: '200ms' }} />
-                <div className="relative z-10 w-16 h-16 rounded-full bg-red-600 flex items-center justify-center shadow-lg">
+                <span className="absolute w-24 h-24 rounded-full bg-brand-primary opacity-20 animate-ping" />
+                <span className="absolute w-20 h-20 rounded-full bg-brand-primary opacity-25 animate-ping" style={{ animationDelay: '200ms' }} />
+                <div className="relative z-10 w-16 h-16 rounded-full bg-brand-primary flex items-center justify-center shadow-lg">
                   <span className="w-5 h-5 rounded-sm bg-white" />
                 </div>
               </div>
@@ -267,7 +265,7 @@ export default function AudioRecorder() {
                 {WAVE_DELAYS.map((delay, i) => (
                   <div
                     key={i}
-                    className="w-1 rounded-full bg-red-400 origin-bottom"
+                    className="w-1 rounded-full bg-brand-accent origin-bottom"
                     style={{
                       height: '100%',
                       animation: `wave-bar 0.7s ease-in-out infinite alternate`,
@@ -292,8 +290,8 @@ export default function AudioRecorder() {
           {/* ── UPLOADING ── */}
           {isUploading && (
             <div className="w-full max-w-xs flex flex-col items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
-                <svg className="w-6 h-6 text-blue-600 animate-spin" fill="none" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-full bg-brand-light flex items-center justify-center">
+                <svg className="w-6 h-6 text-brand-primary animate-spin" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
                 </svg>
@@ -304,7 +302,7 @@ export default function AudioRecorder() {
               </div>
               <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
                 <div
-                  className="bg-blue-600 h-1.5 rounded-full transition-all duration-300"
+                  className="bg-brand-primary h-1.5 rounded-full transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}
                 />
               </div>
