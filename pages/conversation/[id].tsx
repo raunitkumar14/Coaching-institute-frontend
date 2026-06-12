@@ -49,14 +49,8 @@ export default function ConversationDetailPage() {
 
     setAudioLoading(true);
     api.get<{ audio_url: string }>(`/api/conversations/${id}/audio`)
-      .then((r) => {
-        console.log('[audio] response data:', r.data);
-        setAudioUrl(r.data.audio_url);
-      })
-      .catch((err) => {
-        console.error('[audio] fetch error:', err);
-        setAudioError('Failed to load audio.');
-      })
+      .then((r) => setAudioUrl(r.data.audio_url))
+      .catch(() => setAudioError('Failed to load audio.'))
       .finally(() => setAudioLoading(false));
   }, [id]);
 
@@ -66,7 +60,6 @@ export default function ConversationDetailPage() {
         {/* Navbar */}
         <header className="bg-brand-navy shrink-0 shadow-md">
           <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
-            {/* Brand */}
             <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-lg bg-brand-primary flex items-center justify-center">
                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -80,7 +73,6 @@ export default function ConversationDetailPage() {
               </div>
             </div>
 
-            {/* Right side */}
             <div className="flex items-center gap-4">
               <button
                 onClick={() => router.push('/dashboard')}
@@ -94,9 +86,7 @@ export default function ConversationDetailPage() {
               {user && (
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 rounded-full bg-brand-primary flex items-center justify-center">
-                    <span className="text-xs font-semibold text-white">
-                      {user.name.charAt(0).toUpperCase()}
-                    </span>
+                    <span className="text-xs font-semibold text-white">{user.name.charAt(0).toUpperCase()}</span>
                   </div>
                   <span className="text-sm font-medium text-gray-200">{user.name}</span>
                 </div>
@@ -147,24 +137,23 @@ export default function ConversationDetailPage() {
               <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
                 <div className="border-l-4 border-brand-primary px-6 py-5">
                   <div className="flex items-start justify-between gap-4">
-                    <div>
+                    <div className="space-y-3">
                       <h1 className="text-xl font-bold text-gray-900">{conversation.student_name}</h1>
-                      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500">
+                      <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-gray-500">
+                        <span className="flex items-center gap-1.5">
+                          <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="18" height="18" rx="2" />
+                            <path d="M3 9h18M9 21V9" />
+                          </svg>
+                          <span className="text-gray-400">Lead ID:</span>&nbsp;
+                          <span className="font-medium text-gray-700">{conversation.lead_id}</span>
+                        </span>
                         <span className="flex items-center gap-1.5">
                           <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
                             <path d="M22 16.92v3a2 2 0 01-2.18 2A19.86 19.86 0 013.09 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72c.13.96.36 1.9.71 2.81a2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006.99 7l1.27-1.27a2 2 0 012.11-.45c.91.35 1.85.58 2.81.71A2 2 0 0122 16.92z" />
                           </svg>
                           {conversation.student_phone}
                         </span>
-                        {conversation.student_email && (
-                          <span className="flex items-center gap-1.5">
-                            <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                              <polyline points="22,6 12,13 2,6" />
-                            </svg>
-                            {conversation.student_email}
-                          </span>
-                        )}
                         <span className="flex items-center gap-1.5">
                           <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -192,7 +181,7 @@ export default function ConversationDetailPage() {
                 </div>
               </div>
 
-              {/* Audio player card */}
+              {/* Audio player */}
               <div className="bg-white rounded-2xl border border-gray-200 shadow-sm px-6 py-5">
                 <h2 className="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-4">Recording</h2>
                 {audioLoading && (
@@ -213,11 +202,7 @@ export default function ConversationDetailPage() {
                   </div>
                 )}
                 {!audioLoading && audioUrl && (
-                  <audio
-                    controls
-                    src={audioUrl}
-                    style={{ width: '100%', minHeight: '40px', display: 'block' }}
-                  >
+                  <audio controls src={audioUrl} style={{ width: '100%', minHeight: '40px', display: 'block' }}>
                     Your browser does not support the audio element.
                   </audio>
                 )}
@@ -226,7 +211,7 @@ export default function ConversationDetailPage() {
                 )}
               </div>
 
-              {/* Status-specific content */}
+              {/* Uploaded banner */}
               {conversation.status === 'uploaded' && (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-2xl px-6 py-5 flex items-start gap-3">
                   <svg className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -236,66 +221,20 @@ export default function ConversationDetailPage() {
                   </svg>
                   <div>
                     <p className="text-sm font-semibold text-yellow-800">Audio uploaded successfully!</p>
-                    <p className="mt-0.5 text-sm text-yellow-700">Transcription will begin shortly.</p>
+                    <p className="mt-0.5 text-sm text-yellow-700">The recording has been saved.</p>
                   </div>
                 </div>
               )}
 
-              {conversation.status === 'completed' && conversation.summary && (
-                <div className="space-y-4">
-                  <div className="bg-white rounded-2xl border border-gray-200 shadow-sm px-6 py-5">
-                    <h2 className="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-3">Summary</h2>
-                    <p className="text-sm text-gray-700 leading-relaxed">{conversation.summary.executive_summary}</p>
-                  </div>
-
-                  {conversation.summary.student_interests.length > 0 && (
-                    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm px-6 py-5">
-                      <h2 className="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-3">Student Interests</h2>
-                      <ul className="space-y-1.5">
-                        {conversation.summary.student_interests.map((item, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {conversation.summary.follow_up_actions.length > 0 && (
-                    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm px-6 py-5">
-                      <h2 className="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-3">Follow-up Actions</h2>
-                      <ul className="space-y-1.5">
-                        {conversation.summary.follow_up_actions.map((item, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-green-500 shrink-0" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {(conversation.status === 'transcribing' || conversation.status === 'transcribed' || conversation.status === 'summarizing') && (
-                <div className="bg-white rounded-2xl border border-gray-200 shadow-sm px-6 py-8 flex flex-col items-center gap-3">
-                  <svg className="w-6 h-6 text-brand-primary animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-                  </svg>
-                  <p className="text-sm text-gray-500">Processing your recording — this usually takes a few minutes.</p>
-                </div>
-              )}
-
+              {/* Error banner */}
               {conversation.status === 'error' && (
                 <div className="bg-red-50 border border-red-200 rounded-2xl px-6 py-5 flex items-start gap-3">
                   <svg className="w-5 h-5 text-red-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-.75-11.25a.75.75 0 011.5 0v4.5a.75.75 0 01-1.5 0v-4.5zm.75 7.5a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
                   </svg>
                   <div>
-                    <p className="text-sm font-semibold text-red-800">Processing failed</p>
-                    <p className="mt-0.5 text-sm text-red-700">There was an error processing this recording. Please contact support.</p>
+                    <p className="text-sm font-semibold text-red-800">Upload failed</p>
+                    <p className="mt-0.5 text-sm text-red-700">There was an error saving this recording. Please contact support.</p>
                   </div>
                 </div>
               )}

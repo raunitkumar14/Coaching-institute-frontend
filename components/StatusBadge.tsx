@@ -1,14 +1,10 @@
 import { StatusEnum } from '@/types';
 
 const CONFIG: Record<StatusEnum, { label: string; className: string }> = {
-  recording:    { label: 'Recording',    className: 'bg-brand-muted text-brand-primary' },
-  uploading:    { label: 'Uploading',    className: 'bg-yellow-100 text-yellow-700' },
-  uploaded:     { label: 'Uploaded',     className: 'bg-yellow-100 text-yellow-700' },
-  transcribing: { label: 'Transcribing', className: 'bg-brand-muted text-brand-primary' },
-  transcribed:  { label: 'Transcribed',  className: 'bg-brand-muted text-brand-primary' },
-  summarizing:  { label: 'Summarizing',  className: 'bg-purple-100 text-purple-700' },
-  completed:    { label: 'Completed',    className: 'bg-green-100 text-green-700' },
-  error:        { label: 'Error',        className: 'bg-red-100 text-red-700' },
+  recording: { label: 'Recording', className: 'bg-brand-muted text-brand-primary' },
+  uploading: { label: 'Uploading', className: 'bg-yellow-100 text-yellow-700' },
+  uploaded:  { label: 'Uploaded',  className: 'bg-yellow-100 text-yellow-700' },
+  error:     { label: 'Error',     className: 'bg-red-100 text-red-700' },
 };
 
 interface Props {
