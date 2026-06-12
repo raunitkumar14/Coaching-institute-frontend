@@ -31,6 +31,17 @@ interface Props {
   student_phone: string;
 }
 
+function extractErrorMessage(err: unknown, fallback: string): string {
+  const detail = (err as { response?: { data?: { detail?: unknown; message?: unknown } } })
+    ?.response?.data?.detail;
+  const message = (err as { response?: { data?: { message?: unknown } } })
+    ?.response?.data?.message;
+  if (typeof detail === 'string') return detail;
+  if (Array.isArray(detail)) return fallback;
+  if (typeof message === 'string') return message;
+  return fallback;
+}
+
 export default function AudioRecorder({ lead_id, student_name, student_phone }: Props) {
   const router = useRouter();
 
@@ -60,9 +71,7 @@ export default function AudioRecorder({ lead_id, student_name, student_phone }: 
       );
       sessionRef.current = data;
     } catch (err: unknown) {
-      const e = err as { response?: { data?: { detail?: string; message?: string } } };
-      const msg = e?.response?.data?.detail || e?.response?.data?.message || 'Failed to prepare upload. Please try again.';
-      setError(msg);
+      setError(extractErrorMessage(err, 'Failed to prepare upload. Please try again.'));
       return;
     }
 
@@ -121,9 +130,7 @@ export default function AudioRecorder({ lead_id, student_name, student_phone }: 
       });
       router.push(`/conversation/${session.session_id}`);
     } catch (err: unknown) {
-      const e = err as { response?: { data?: { detail?: string; message?: string } } };
-      const msg = e?.response?.data?.detail || e?.response?.data?.message || 'Something went wrong. Please try again.';
-      setError(msg);
+      setError(extractErrorMessage(err, 'Upload failed. Please try again.'));
       setPhase('error');
     }
   }
