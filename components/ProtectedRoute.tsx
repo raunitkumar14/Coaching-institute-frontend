@@ -1,32 +1,28 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-// TODO: restore real auth — import api from '@/lib/api'
+import api from '@/lib/api';
 import { User } from '@/types';
 
 interface Props {
   children: React.ReactNode;
 }
 
-function getStoredUser(): User | null {
-  if (typeof window === 'undefined') return null;
-  const stored = localStorage.getItem('user');
-  return stored ? (JSON.parse(stored) as User) : null;
-}
-
 export default function ProtectedRoute({ children }: Props) {
   const router = useRouter();
-  const [mounted, setMounted] = useState(false);
+  const [verified, setVerified] = useState(false);
 
-  useEffect(() => setMounted(true), []);
-
-  // TODO: restore — api.get('/api/auth/me'), redirect on 401
   useEffect(() => {
-    if (!mounted) return;
-    const user = getStoredUser();
-    if (!user) router.replace('/login');
-  }, [mounted, router]);
+    api.get<User>('/api/auth/me')
+      .then(({ data }) => {
+        localStorage.setItem('user', JSON.stringify(data));
+        setVerified(true);
+      })
+      .catch(() => {
+        localStorage.removeItem('user');
+        router.replace('/login');
+      });
+  }, [router]);
 
-  if (!mounted) return null;
-  if (!getStoredUser()) return null;
+  if (!verified) return null;
   return <>{children}</>;
 }
