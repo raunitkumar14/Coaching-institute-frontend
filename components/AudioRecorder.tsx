@@ -124,7 +124,7 @@ export default function AudioRecorder({ lead_id, student_name, student_phone }: 
       setUploadStep('Saving conversation…');
       setUploadProgress(100);
       await api.post('/api/conversations', {
-        lead_id,
+        session_id: session.session_id,
         s3_key: session.s3_key,
         duration_seconds: durationSeconds,
       });
