@@ -4,14 +4,15 @@ import StatusBadge from '@/components/StatusBadge';
 import api from '@/lib/api';
 import { Conversation } from '@/types';
 
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleString('en-IN', {
+function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleString('en-IN', {
     timeZone: 'Asia/Kolkata',
-    day: 'numeric',
+    day: '2-digit',
     month: 'short',
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
+    hour12: true,
   });
 }
 
