@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import StatusBadge from '@/components/StatusBadge';
+import api from '@/lib/api';
 import { Conversation } from '@/types';
 
 function formatDate(iso: string) {
@@ -21,17 +23,38 @@ function formatDuration(seconds: number) {
 
 interface Props {
   conversation: Conversation;
+  onDelete: (id: string) => void;
 }
 
-export default function ConversationCard({ conversation }: Props) {
+export default function ConversationCard({ conversation, onDelete }: Props) {
   const router = useRouter();
+  const [confirming, setConfirming] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  async function handleDelete(e: React.MouseEvent) {
+    e.stopPropagation();
+    if (!confirming) { setConfirming(true); return; }
+    setDeleting(true);
+    try {
+      await api.delete(`/api/conversations/${conversation.id}`);
+      onDelete(conversation.id);
+    } catch {
+      setDeleting(false);
+      setConfirming(false);
+    }
+  }
+
+  function cancelDelete(e: React.MouseEvent) {
+    e.stopPropagation();
+    setConfirming(false);
+  }
 
   return (
-    <button
+    <div
       onClick={() => router.push(`/conversation/${conversation.id}`)}
       className="w-full text-left bg-white rounded-2xl border border-gray-200 shadow-sm px-6 py-4
-                 hover:shadow-md hover:border-brand-primary transition-all duration-150 focus:outline-none
-                 focus:ring-2 focus:ring-brand-primary focus:ring-offset-2"
+                 hover:shadow-md hover:border-brand-primary transition-all duration-150 cursor-pointer
+                 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
@@ -70,10 +93,44 @@ export default function ConversationCard({ conversation }: Props) {
             )}
           </div>
         </div>
-        <div className="shrink-0 pt-0.5">
+
+        {/* Right side: status badge + delete */}
+        <div className="shrink-0 flex items-center gap-2 pt-0.5">
           <StatusBadge status={conversation.status} />
+
+          {confirming ? (
+            <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+              <span className="text-xs text-gray-500">Delete?</span>
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="text-xs font-semibold text-red-600 hover:text-red-800 disabled:opacity-50 transition"
+              >
+                {deleting ? '…' : 'Yes'}
+              </button>
+              <button
+                onClick={cancelDelete}
+                className="text-xs font-semibold text-gray-400 hover:text-gray-600 transition"
+              >
+                No
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={handleDelete}
+              className="p-1 rounded text-gray-300 hover:text-red-500 hover:bg-red-50 transition"
+              title="Delete"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+                <path d="M10 11v6M14 11v6" />
+                <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
-    </button>
+    </div>
   );
 }

@@ -26,6 +26,11 @@ export default function ConversationDetailPage() {
   const router = useRouter();
   const { id } = router.query;
 
+  function logout() {
+    localStorage.removeItem('user');
+    router.push('/login');
+  }
+
   const [user, setUser] = useState<User | null>(null);
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [loading, setLoading] = useState(true);
@@ -84,12 +89,21 @@ export default function ConversationDetailPage() {
                 Dashboard
               </button>
               {user && (
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-full bg-brand-primary flex items-center justify-center">
-                    <span className="text-xs font-semibold text-white">{user.name.charAt(0).toUpperCase()}</span>
+                <>
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-brand-primary flex items-center justify-center">
+                      <span className="text-xs font-semibold text-white">{user.name.charAt(0).toUpperCase()}</span>
+                    </div>
+                    <span className="text-sm font-medium text-gray-200">{user.name}</span>
                   </div>
-                  <span className="text-sm font-medium text-gray-200">{user.name}</span>
-                </div>
+                  <button
+                    onClick={logout}
+                    className="text-xs font-semibold text-gray-300 hover:text-white border border-gray-600 hover:border-gray-400
+                               rounded-md px-2.5 py-1 transition"
+                  >
+                    Logout
+                  </button>
+                </>
               )}
             </div>
           </div>
