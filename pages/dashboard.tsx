@@ -216,7 +216,7 @@ export default function DashboardPage() {
                 </button>
               </div>
 
-              <p className="text-sm text-gray-500 mb-4">Enter the Kylas CRM Lead ID to fetch student details.</p>
+              <p className="text-sm text-gray-500 mb-4">Enter the Lead ID to fetch student details.</p>
 
               <div className="flex gap-2">
                 <input
