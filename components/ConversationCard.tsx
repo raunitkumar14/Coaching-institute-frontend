@@ -5,7 +5,8 @@ import api from '@/lib/api';
 import { Conversation } from '@/types';
 
 function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleString('en-IN', {
+  const normalized = dateString.endsWith('Z') ? dateString : dateString + 'Z';
+  return new Date(normalized).toLocaleString('en-IN', {
     timeZone: 'Asia/Kolkata',
     day: '2-digit',
     month: 'short',
